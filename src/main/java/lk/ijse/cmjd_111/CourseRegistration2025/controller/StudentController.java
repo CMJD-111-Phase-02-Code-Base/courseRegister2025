@@ -2,7 +2,9 @@ package lk.ijse.cmjd_111.CourseRegistration2025.controller;
 
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.Role;
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.UserDTO;
+import lk.ijse.cmjd_111.CourseRegistration2025.service.StudentService;
 import lk.ijse.cmjd_111.CourseRegistration2025.service.impl.StudentServiceIMPL;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "student")
 public class StudentController {
+    @Autowired
+    private StudentService studentService;
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -27,8 +31,9 @@ public class StudentController {
     public ResponseEntity<UserDTO> getSelectedStudent(@PathVariable String studentID){
         // send student details
         System.out.println("Path Variable is: "+studentID);
-        var studentServiceIMPL = new StudentServiceIMPL();
-        var selectedStudent = studentServiceIMPL.getSelectedStudent(studentID);
+//        var studentServiceIMPL = new StudentServiceIMPL();
+//        var selectedStudent = studentServiceIMPL.getSelectedStudent(studentID);
+        var selectedStudent = studentService.getSelectedStudent(studentID);
         if(studentID == null || !studentID.equals(selectedStudent.getUserId())){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
