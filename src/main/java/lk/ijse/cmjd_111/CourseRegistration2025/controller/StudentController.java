@@ -24,7 +24,7 @@ public class StudentController {
                 "First Street", "Panadura South",
                 "Panadura", "Panadura",
                 "123", Role.STUDENT);
-        if(studentID == null){
+        if(studentID == null || !studentID.equals(student01.getUserId())){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(student01,HttpStatus.OK);
