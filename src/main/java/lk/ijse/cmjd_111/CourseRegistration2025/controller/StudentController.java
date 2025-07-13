@@ -71,4 +71,9 @@ public class StudentController {
 
         return new ResponseEntity<>(studentList, HttpStatus.OK);
     }
+    @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateStudent(@RequestParam String studentId,@RequestBody UserDTO studentUpdateData){
+        System.out.println("Student id "+studentId);
+        System.out.println(studentUpdateData);
+    }
 }
