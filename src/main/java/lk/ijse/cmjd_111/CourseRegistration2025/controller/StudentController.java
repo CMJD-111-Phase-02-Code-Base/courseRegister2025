@@ -76,4 +76,8 @@ public class StudentController {
         System.out.println("Student id "+studentId);
         System.out.println(studentUpdateData);
     }
+    @DeleteMapping
+    public void deleteStudent(@RequestHeader("X-studentId") String studentID){
+        System.out.println("ID to be deleted: "+studentID);
+    }
 }
