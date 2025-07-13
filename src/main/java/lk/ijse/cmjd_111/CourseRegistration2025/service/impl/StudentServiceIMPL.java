@@ -1,5 +1,6 @@
 package lk.ijse.cmjd_111.CourseRegistration2025.service.impl;
 
+import lk.ijse.cmjd_111.CourseRegistration2025.dto.Role;
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.UserDTO;
 import lk.ijse.cmjd_111.CourseRegistration2025.service.StudentService;
 
@@ -7,8 +8,8 @@ import java.util.List;
 
 public class StudentServiceIMPL implements StudentService {
     @Override
-    public void saveStudent(UserDTO student) {
-
+    public UserDTO saveStudent(UserDTO student) {
+      return null;
     }
 
     @Override
@@ -23,7 +24,12 @@ public class StudentServiceIMPL implements StudentService {
 
     @Override
     public UserDTO getSelectedStudent(String studentId) {
-        return null;
+        var student01 = new UserDTO("STU01", "Kamal",
+                "Perera", "kamal@mail.com",
+                "First Street", "Panadura South",
+                "Panadura", "Panadura",
+                "123", Role.STUDENT);
+        return student01;
     }
 
     @Override

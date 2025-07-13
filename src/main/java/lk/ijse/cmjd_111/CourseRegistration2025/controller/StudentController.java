@@ -2,6 +2,7 @@ package lk.ijse.cmjd_111.CourseRegistration2025.controller;
 
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.Role;
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.UserDTO;
+import lk.ijse.cmjd_111.CourseRegistration2025.service.impl.StudentServiceIMPL;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,22 +19,20 @@ public class StudentController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> saveStudent(@RequestBody UserDTO studentData){
-        System.out.println(studentData);
-        return new ResponseEntity<>(studentData,HttpStatus.CREATED);
+        var studentServiceIMPL = new StudentServiceIMPL();
+        var studentDetails = studentServiceIMPL.saveStudent(studentData);
+        return new ResponseEntity<>(studentDetails,HttpStatus.CREATED);
     }
     @GetMapping(value = "{studentID}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> getSelectedStudent(@PathVariable String studentID){
         // send student details
         System.out.println("Path Variable is: "+studentID);
-        var student01 = new UserDTO("STU01", "Kamal",
-                "Perera", "kamal@mail.com",
-                "First Street", "Panadura South",
-                "Panadura", "Panadura",
-                "123", Role.STUDENT);
-        if(studentID == null || !studentID.equals(student01.getUserId())){
+        var studentServiceIMPL = new StudentServiceIMPL();
+        var selectedStudent = studentServiceIMPL.getSelectedStudent(studentID);
+        if(studentID == null || !studentID.equals(selectedStudent.getUserId())){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(student01,HttpStatus.OK);
+        return new ResponseEntity<>(selectedStudent,HttpStatus.OK);
     }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTO>> getAllStudents(){
