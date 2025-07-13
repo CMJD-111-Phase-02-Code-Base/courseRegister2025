@@ -3,6 +3,7 @@ package lk.ijse.cmjd_111.CourseRegistration2025.controller;
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.Role;
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.UserDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +12,16 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/student")
+@RequestMapping(value = "api/v1/student")
 public class StudentController {
-    @PostMapping
+    @PostMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> saveStudent(@RequestBody UserDTO studentData){
         System.out.println(studentData);
         return new ResponseEntity<>(studentData,HttpStatus.CREATED);
     }
-    @GetMapping("{studentID}")
+    @GetMapping(value = "{studentID}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> getSelectedStudent(@PathVariable String studentID){
         // send student details
         System.out.println("Path Variable is: "+studentID);
@@ -32,7 +35,7 @@ public class StudentController {
         }
         return new ResponseEntity<>(student01,HttpStatus.OK);
     }
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTO>> getAllStudents(){
         List<UserDTO> studentList = Arrays.asList(
                 new UserDTO("STU02", "Nimal",
