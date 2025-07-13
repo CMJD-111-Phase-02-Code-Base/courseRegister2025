@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1/student")
+@RequestMapping(value = "student")
 public class StudentController {
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
