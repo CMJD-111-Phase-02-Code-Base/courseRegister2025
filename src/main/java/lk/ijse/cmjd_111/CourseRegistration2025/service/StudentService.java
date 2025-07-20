@@ -8,6 +8,6 @@ public interface StudentService {
     UserDTO saveStudent(UserDTO student);
     void deleteStudent(String studentId);
     void updateStudent(String studentId,UserDTO student);
-    UserDTO getSelectedStudent(String studentId);
+    UserDTO getSelectedStudent(String studentId) throws Exception;
     List<UserDTO> getAllStudents();
 }

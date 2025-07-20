@@ -23,10 +23,6 @@ public class StudentController {
 
     private final StudentService studentService;
 
-//    public StudentController(StudentService studentService) {
-//        this.studentService = studentService;
-//    }
-
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -37,15 +33,16 @@ public class StudentController {
     }
     @GetMapping(value = "{studentID}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> getSelectedStudent(@PathVariable String studentID){
-        // send student details
-        System.out.println("Path Variable is: "+studentID);
-//        var studentServiceIMPL = new StudentServiceIMPL();
-//        var selectedStudent = studentServiceIMPL.getSelectedStudent(studentID);
-        var selectedStudent = studentService.getSelectedStudent(studentID);
-        if(studentID == null || !studentID.equals(selectedStudent.getUserId())){
+        if(studentID == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(selectedStudent,HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(studentService.getSelectedStudent(studentID),
+                    HttpStatus.OK);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTO>> getAllStudents(){
