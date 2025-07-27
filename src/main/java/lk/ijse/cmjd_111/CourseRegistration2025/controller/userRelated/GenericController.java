@@ -21,12 +21,12 @@ public abstract class GenericController<T> {
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> saveStudent(@RequestBody T user){
+    public ResponseEntity<Void> saveUser(@RequestBody T user){
             userService.saveUser(user);
             return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @GetMapping(value = "{userId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<T> getSelectedStudent(@PathVariable String userId){
+    public ResponseEntity<T> getSelectedUser(@PathVariable String userId){
         if(userId == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -38,11 +38,11 @@ public abstract class GenericController<T> {
         }
     }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<T>> getAllStudents(){
+    public ResponseEntity<List<T>> getAllUsers(){
          return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateStudent(@RequestParam String userId,
+    public ResponseEntity<Void> updateUser(@RequestParam String userId,
                               @RequestBody T toBeUpdatedData){
          try {
              userService.updateUser(userId,toBeUpdatedData);
@@ -53,7 +53,7 @@ public abstract class GenericController<T> {
          }
     }
     @DeleteMapping(value = "{userId}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable String userId){
+    public ResponseEntity<Void> deleteUser(@PathVariable String userId){
         try {
             userService.deleteUser(userId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
