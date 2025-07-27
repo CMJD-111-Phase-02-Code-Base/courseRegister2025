@@ -8,6 +8,8 @@ import lk.ijse.cmjd_111.CourseRegistration2025.util.IDGen;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class StudentServiceIMPL implements GenericService<UserDTO> {
@@ -32,8 +34,13 @@ public class StudentServiceIMPL implements GenericService<UserDTO> {
     }
 
     @Override
-    public UserDTO getSelectedUser(String userId) throws Exception {
-        return null;
+    public UserDTO getSelectedUser(String studentId) throws Exception {
+        Optional<StudentEntity> foundStudent =
+                studentDao.findById(studentId);
+        if(!foundStudent.isPresent()){
+            throw new Exception("Student not found");
+        }
+        return conversion.toStudentDTO(studentDao.getReferenceById(studentId));
     }
 
     @Override
