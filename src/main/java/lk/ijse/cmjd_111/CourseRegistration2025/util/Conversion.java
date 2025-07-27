@@ -70,6 +70,8 @@ public class Conversion {
                 .orElseThrow(()-> new RuntimeException("Lecturer Not Found"));
         courseEntity.setLecturer(lecturer);
         return courseEntity;
-
+    }
+    public List<CourseDTO> toCourseDTOList(List<CourseEntity> courses){
+        return courses.stream().map(this::toCourseDTO).toList();
     }
 }

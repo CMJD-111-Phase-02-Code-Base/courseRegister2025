@@ -1,6 +1,7 @@
 package lk.ijse.cmjd_111.CourseRegistration2025.controller;
 
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.CourseDTO;
+import lk.ijse.cmjd_111.CourseRegistration2025.service.CourseService;
 import lk.ijse.cmjd_111.CourseRegistration2025.service.GenericService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,22 +15,22 @@ import java.util.List;
 @RequestMapping(value = "course")
 @RequiredArgsConstructor
 public  class CourseController {
-
+private final CourseService courseService;
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveCourse(@RequestBody CourseDTO courseDTO) {
-        //
+        courseService.saveCourse(courseDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(value = "{courseId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<T> getSelectedCourse(@PathVariable String courseId) {
+    public ResponseEntity<CourseDTO> getSelectedCourse(@PathVariable String courseId) {
         if (courseId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            return new ResponseEntity<>(userService.getSelectedUser(userId), HttpStatus.OK);
+            return new ResponseEntity<>(courseService.getSelectedCourse(courseId), HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -37,15 +38,15 @@ public  class CourseController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<T>> getAllCourses() {
-        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+    public ResponseEntity<List<CourseDTO>> getAllCourses() {
+        return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.OK);
     }
 
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateCourse(@RequestParam String courseId,
                                            @RequestBody CourseDTO toBeUpdatedCourseData) {
         try {
-            userService.updateUser(userId, toBeUpdatedData);
+            courseService.updateCourse(courseId, toBeUpdatedCourseData);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -56,7 +57,7 @@ public  class CourseController {
     @DeleteMapping(value = "{courseId}")
     public ResponseEntity<Void> deleteUser(@PathVariable String courseId) {
         try {
-            userService.deleteUser(userId);
+            courseService.deleteCourse(courseId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception ex) {
             ex.printStackTrace();
