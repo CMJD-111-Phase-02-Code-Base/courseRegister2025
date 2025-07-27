@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface GenericService<T> {
     void saveUser(T user);
-    void deleteUser(String userId);
+    void deleteUser(String userId) throws Exception;
     void updateUser(String userId,T user) throws Exception;
     T getSelectedUser(String userId) throws Exception;
     List<T> getAllUsers();

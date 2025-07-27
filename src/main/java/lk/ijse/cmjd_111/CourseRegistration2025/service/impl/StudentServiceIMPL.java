@@ -26,8 +26,13 @@ public class StudentServiceIMPL implements GenericService<UserDTO> {
     }
 
     @Override
-    public void deleteUser(String studentId) {
-
+    public void deleteUser(String studentId) throws Exception {
+        Optional<StudentEntity> foundStudent =
+                studentDao.findById(studentId);
+        if(!foundStudent.isPresent()){
+            throw new Exception("Student not found");
+        }
+        studentDao.deleteById(studentId);
     }
 
     @Override
