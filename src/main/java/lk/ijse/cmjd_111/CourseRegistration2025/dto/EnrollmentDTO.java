@@ -7,12 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class EnrollmentDTO {
+public class EnrollmentDTO implements Serializable {
     private String enrollmentId;
     private String studentId;
     private String courseId;

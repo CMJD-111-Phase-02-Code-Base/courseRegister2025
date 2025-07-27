@@ -1,19 +1,14 @@
-package lk.ijse.cmjd_111.CourseRegistration2025.controller;
+package lk.ijse.cmjd_111.CourseRegistration2025.controller.userRelated;
 
-import lk.ijse.cmjd_111.CourseRegistration2025.dto.Role;
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.UserDTO;
 import lk.ijse.cmjd_111.CourseRegistration2025.service.StudentService;
 import lk.ijse.cmjd_111.CourseRegistration2025.service.impl.StudentServiceIMPL;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController

@@ -1,36 +1,33 @@
-package lk.ijse.cmjd_111.CourseRegistration2025.controller;
+package lk.ijse.cmjd_111.CourseRegistration2025.controller.userRelated;
 
-import lk.ijse.cmjd_111.CourseRegistration2025.dto.Role;
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.UserDTO;
-import lk.ijse.cmjd_111.CourseRegistration2025.service.LecturerService;
+import lk.ijse.cmjd_111.CourseRegistration2025.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "lecturer")
+@RequestMapping(value = "admin")
 @RequiredArgsConstructor
-public class LecturerController {
-    private final LecturerService lecturerService;
+public class AdminController {
+    private final AdminService adminService;
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> saveLecturer(@RequestBody UserDTO lecturer){
-        System.out.println(lecturer);
-        return new ResponseEntity<>(lecturer,HttpStatus.CREATED);
+    public ResponseEntity<UserDTO> saveAdmin(@RequestBody UserDTO admin){
+        return new ResponseEntity<>(admin,HttpStatus.CREATED);
     }
     @GetMapping(value = "{lecturerID}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> getSelectedLecturer(@PathVariable String lecturerID){
+    public ResponseEntity<UserDTO> getSelectedAdmin(@PathVariable String lecturerID){
         if(lecturerID == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            return new ResponseEntity<>(lecturerService.getSelectedLecturer(lecturerID),HttpStatus.OK);
+            return new ResponseEntity<>(adminService.getSelectedAdmin(lecturerID),HttpStatus.OK);
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -38,8 +35,8 @@ public class LecturerController {
 
     }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<UserDTO>> getAllLecturers(){
-        return new ResponseEntity<>(lecturerService.getAllLecturers(), HttpStatus.OK);
+    public ResponseEntity<List<UserDTO>> getAllAdmins(){
+        return new ResponseEntity<>(adminService.getAllAdmins(), HttpStatus.OK);
     }
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateLecturer(@RequestParam String lecturerId,@RequestBody UserDTO lecturerUpdateData){
@@ -47,7 +44,7 @@ public class LecturerController {
         System.out.println(lecturerUpdateData);
     }
     @DeleteMapping
-    public void deleteLecturer(@RequestHeader("X-lecturerId") String lecturerID){
+    public void deleteAdmins(@RequestHeader("X-lecturerId") String lecturerID){
         System.out.println("ID to be deleted: "+lecturerID);
     }
 }
