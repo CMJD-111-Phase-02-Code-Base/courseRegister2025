@@ -1,6 +1,7 @@
 package lk.ijse.cmjd_111.CourseRegistration2025.service;
 
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.UserDTO;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
