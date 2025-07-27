@@ -6,4 +6,7 @@ public class IDGen {
     public static String generateStudentID(){
         return "STU-"+ UUID.randomUUID();
     }
+    public static String generateLecturerID(){
+        return "LECT-"+ UUID.randomUUID();
+    }
 }

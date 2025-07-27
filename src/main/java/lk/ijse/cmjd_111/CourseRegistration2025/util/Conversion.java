@@ -1,6 +1,7 @@
 package lk.ijse.cmjd_111.CourseRegistration2025.util;
 
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.UserDTO;
+import lk.ijse.cmjd_111.CourseRegistration2025.entity.LecturerEntity;
 import lk.ijse.cmjd_111.CourseRegistration2025.entity.StudentEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,5 +24,15 @@ public class Conversion {
     }
     public List<UserDTO> toStudentDTOList(List<StudentEntity> students){
         return modelMapper.map(students,new TypeToken<List<UserDTO>>(){}.getType());
+    }
+    //Lecturer
+    public UserDTO toLecturerDTO(LecturerEntity lecturer){
+        return modelMapper.map(lecturer,UserDTO.class);
+    }
+    public LecturerEntity toLecturerEntity(UserDTO lecturerDTO){
+        return modelMapper.map(lecturerDTO,LecturerEntity.class);
+    }
+    public List<UserDTO> toLecturerDTOList(List<LecturerEntity> lecturers){
+        return modelMapper.map(lecturers,new TypeToken<List<UserDTO>>(){}.getType());
     }
 }
