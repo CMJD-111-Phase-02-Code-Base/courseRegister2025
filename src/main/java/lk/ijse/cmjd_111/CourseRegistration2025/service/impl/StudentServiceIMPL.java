@@ -45,6 +45,6 @@ public class StudentServiceIMPL implements GenericService<UserDTO> {
 
     @Override
     public List<UserDTO> getAllUsers() {
-        return List.of();
+        return conversion.toStudentDTOList(studentDao.findAll());
     }
 }
