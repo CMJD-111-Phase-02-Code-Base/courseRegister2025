@@ -9,4 +9,7 @@ public class IDGen {
     public static String generateLecturerID(){
         return "LECT-"+ UUID.randomUUID();
     }
+    public static String generateCourseID(){
+        return "CRS-"+ UUID.randomUUID();
+    }
 }
