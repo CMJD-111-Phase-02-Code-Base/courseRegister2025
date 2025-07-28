@@ -1,7 +1,5 @@
 package lk.ijse.cmjd_111.CourseRegistration2025.dto;
 
-import jakarta.persistence.*;
-import lk.ijse.cmjd_111.CourseRegistration2025.entity.LecturerEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -66,7 +66,7 @@ public class Conversion {
         courseEntity.setCredit(courseDTO.getCredit());
         courseEntity.setStartTime(courseDTO.getStartTime());
         courseEntity.setEndTime(courseDTO.getEndTime());
-        LecturerEntity lecturer= lecturerDao.findById(courseDTO.getCourseId())
+        LecturerEntity lecturer= lecturerDao.findById(courseDTO.getLecturer())
                 .orElseThrow(()-> new RuntimeException("Lecturer Not Found"));
         courseEntity.setLecturer(lecturer);
         return courseEntity;

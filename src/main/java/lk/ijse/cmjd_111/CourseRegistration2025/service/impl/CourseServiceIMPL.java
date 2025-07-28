@@ -22,9 +22,9 @@ public class CourseServiceIMPL implements CourseService {
     private final Conversion conversion;
     @Override
     public void saveCourse(CourseDTO courseDTO) {
+        courseDTO.setCourseId(IDGen.generateCourseID());
         var courseEntity =
                 courseDao.save(conversion.toCourseEntity(courseDTO));
-        courseEntity.setCourseId(IDGen.generateCourseID());
         courseDao.save(courseEntity);
     }
 
