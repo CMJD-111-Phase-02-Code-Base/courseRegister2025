@@ -12,4 +12,7 @@ public class IDGen {
     public static String generateCourseID(){
         return "CRS-"+ UUID.randomUUID();
     }
+    public static String generateCourseMaterialID(){
+        return "CMR-"+ UUID.randomUUID();
+    }
 }

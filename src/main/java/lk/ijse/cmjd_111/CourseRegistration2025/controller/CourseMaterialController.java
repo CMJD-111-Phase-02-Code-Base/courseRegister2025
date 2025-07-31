@@ -1,52 +1,79 @@
 package lk.ijse.cmjd_111.CourseRegistration2025.controller;
 
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.CourseMaterialDTO;
+import lk.ijse.cmjd_111.CourseRegistration2025.service.CourseMaterialService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.service.annotation.PostExchange;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Base64;
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("material")
+@RequiredArgsConstructor
 public class CourseMaterialController {
+    private final CourseMaterialService courseMaterialService;
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<CourseMaterialDTO> saveMaterial(
-          @RequestParam String materialId,
-          @RequestParam String fileName,
-          @RequestParam String materialType,
-          @RequestParam MultipartFile material,
-          @RequestParam (required = false) String uploadAt,
-          @RequestParam String courseId
-    ){
-        //step 1 - Create a DTO based on the received data
-        var materialDTO = new CourseMaterialDTO();
-
+    public ResponseEntity<Void> saveMaterial(
+            @RequestParam String fileName,
+            @RequestParam String materialType,
+            @RequestParam MultipartFile material,
+            @RequestParam(required = false) String uploadAt,
+            @RequestParam String courseId
+    ) {
         try {
-            //Step 2 - Build the object
-                //Step - 2.1 - Create Byte collection from the Multipart value
-            byte [] materialBytes = material.getBytes();
-               // step - 2.2 - Create String based on the byte collection
-            String materialString = Base64.getEncoder().encodeToString(materialBytes);
-           //Step 3 - Create date if not provided
-           String uploadTime = uploadAt != null ? uploadAt : LocalDateTime.now().format(DateTimeFormatter.ISO_DATE);
-           //Step 4 - Set the object fields
-            materialDTO.setMaterialId(materialId);
-            materialDTO.setFileName(fileName);
-            materialDTO.setMaterialType(materialType);
-            materialDTO.setMaterial(materialString);
-            materialDTO.setUploadAt(uploadTime);
-            materialDTO.setCourseId(courseId);
-
+            courseMaterialService.saveCourseMaterial(fileName, materialType, material, uploadAt, courseId);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("{materialId}")
+    public ResponseEntity<CourseMaterialDTO> getSelectedCourseMaterial(@PathVariable String materialId){
+        try{
+            return new ResponseEntity<>(courseMaterialService.getSelectedCourseMaterial(materialId),HttpStatus.OK);
         }catch (Exception ex){
             ex.printStackTrace();
-            return new  ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(materialDTO, HttpStatus.OK);
+    }
+    @DeleteMapping("{courseMaterialId}")
+    public ResponseEntity<Void> deleteCourseMaterial(@PathVariable String courseMaterialId){
+        try {
+            courseMaterialService.deleteCourseMaterial(courseMaterialId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PatchMapping("{courseMaterialId}")
+    public ResponseEntity<Void> updateCourseMaterial(@PathVariable String courseMaterialId,
+                                                     @RequestParam String fileName,
+                                                     @RequestParam String materialType,
+                                                     @RequestParam MultipartFile material,
+                                                     @RequestParam(required = false) String uploadAt,
+                                                     @RequestParam String courseId
+    ){
+        try {
+            courseMaterialService.updateCourseMaterial(courseMaterialId,fileName,materialType,material,uploadAt,courseId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping
+    public ResponseEntity<List<CourseMaterialDTO>> getAllMaterials(){
+        return new ResponseEntity<>(courseMaterialService.getAllCourseMaterials(),HttpStatus.OK);
     }
 }

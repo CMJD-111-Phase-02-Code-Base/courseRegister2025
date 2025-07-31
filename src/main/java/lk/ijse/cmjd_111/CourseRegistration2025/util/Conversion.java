@@ -1,9 +1,12 @@
 package lk.ijse.cmjd_111.CourseRegistration2025.util;
 
+import lk.ijse.cmjd_111.CourseRegistration2025.dao.CourseDao;
 import lk.ijse.cmjd_111.CourseRegistration2025.dao.LecturerDao;
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.CourseDTO;
+import lk.ijse.cmjd_111.CourseRegistration2025.dto.CourseMaterialDTO;
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.UserDTO;
 import lk.ijse.cmjd_111.CourseRegistration2025.entity.CourseEntity;
+import lk.ijse.cmjd_111.CourseRegistration2025.entity.CourseMaterialEntity;
 import lk.ijse.cmjd_111.CourseRegistration2025.entity.LecturerEntity;
 import lk.ijse.cmjd_111.CourseRegistration2025.entity.StudentEntity;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,7 @@ import java.util.List;
 public class Conversion {
     private final ModelMapper modelMapper;
     private final LecturerDao lecturerDao;
+    private final CourseDao courseDao;
 
     //Student
     public UserDTO toStudentDTO(StudentEntity student){
@@ -73,5 +77,43 @@ public class Conversion {
     }
     public List<CourseDTO> toCourseDTOList(List<CourseEntity> courses){
         return courses.stream().map(this::toCourseDTO).toList();
+    }
+
+    // Course Material
+    public CourseMaterialDTO toCourseMaterialDTO(CourseMaterialEntity courseMaterialEntity) {
+        CourseMaterialDTO dto = new CourseMaterialDTO();
+        dto.setMaterialId(courseMaterialEntity.getMaterialId());
+        dto.setFileName(courseMaterialEntity.getFileName());
+        dto.setMaterialType(courseMaterialEntity.getMaterialType());
+        dto.setMaterial(courseMaterialEntity.getMaterial());
+        dto.setUploadAt(courseMaterialEntity.getUploadAt());
+        if (courseMaterialEntity.getCourse() != null) {
+            dto.setCourseId(courseMaterialEntity.getCourse().getCourseId());
+        }
+        return dto;
+
+    }
+    public CourseMaterialEntity toCourseMaterialEntity(CourseMaterialDTO courseMaterialDTO) {
+        CourseMaterialEntity entity = new CourseMaterialEntity();
+        entity.setMaterialId(courseMaterialDTO.getMaterialId());
+        entity.setFileName(courseMaterialDTO.getFileName());
+        entity.setMaterialType(courseMaterialDTO.getMaterialType());
+        entity.setMaterial(courseMaterialDTO.getMaterial());
+        entity.setUploadAt(courseMaterialDTO.getUploadAt());
+
+        if (courseMaterialDTO.getCourseId() != null) {
+            CourseEntity selectedCourse = courseDao.findById(courseMaterialDTO.getCourseId())
+                    .orElseThrow(() -> new RuntimeException("Course Material not found with id: " + courseMaterialDTO.getCourseId()));
+            entity.setCourse(selectedCourse);
+        }
+
+        return entity;
+    }
+    public List<CourseMaterialDTO> toCourseMaterialDTOList(List<CourseMaterialEntity> entities) {
+        return entities.stream().map(this::toCourseMaterialDTO).toList();
+    }
+
+    public List<CourseMaterialEntity> toCourseMaterialEntityList(List<CourseMaterialDTO> dtos) {
+        return dtos.stream().map(this::toCourseMaterialEntity).toList();
     }
 }
