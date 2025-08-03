@@ -1,6 +1,7 @@
 package lk.ijse.cmjd_111.CourseRegistration2025.controller;
 
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.CourseDTO;
+import lk.ijse.cmjd_111.CourseRegistration2025.exception.CourseNotFoundException;
 import lk.ijse.cmjd_111.CourseRegistration2025.service.CourseService;
 import lk.ijse.cmjd_111.CourseRegistration2025.service.GenericService;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +32,12 @@ private final CourseService courseService;
         }
         try {
             return new ResponseEntity<>(courseService.getSelectedCourse(courseId), HttpStatus.OK);
-        } catch (Exception ex) {
+        } catch (CourseNotFoundException ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -48,20 +52,27 @@ private final CourseService courseService;
         try {
             courseService.updateCourse(courseId, toBeUpdatedCourseData);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception ex) {
+        } catch (CourseNotFoundException ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @DeleteMapping(value = "{courseId}")
     public ResponseEntity<Void> deleteUser(@PathVariable String courseId) {
         try {
             courseService.deleteCourse(courseId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception ex) {
+        } catch (CourseNotFoundException ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

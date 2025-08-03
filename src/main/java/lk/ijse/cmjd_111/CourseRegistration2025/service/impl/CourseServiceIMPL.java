@@ -5,6 +5,7 @@ import lk.ijse.cmjd_111.CourseRegistration2025.dao.CourseDao;
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.CourseDTO;
 import lk.ijse.cmjd_111.CourseRegistration2025.entity.CourseEntity;
 import lk.ijse.cmjd_111.CourseRegistration2025.entity.LecturerEntity;
+import lk.ijse.cmjd_111.CourseRegistration2025.exception.CourseNotFoundException;
 import lk.ijse.cmjd_111.CourseRegistration2025.service.CourseService;
 import lk.ijse.cmjd_111.CourseRegistration2025.util.Conversion;
 import lk.ijse.cmjd_111.CourseRegistration2025.util.IDGen;
@@ -33,7 +34,7 @@ public class CourseServiceIMPL implements CourseService {
         Optional<CourseEntity> foundLecturer =
                 courseDao.findById(courseId);
         if(!foundLecturer.isPresent()){
-            throw new Exception("Course not found");
+            throw new CourseNotFoundException("Course not found");
         }
         courseDao.deleteById(courseId);
     }
@@ -43,7 +44,7 @@ public class CourseServiceIMPL implements CourseService {
         Optional<CourseEntity> foundCourse =
                 courseDao.findById(courseId);
         if(!foundCourse.isPresent()){
-            throw new Exception("Course not found");
+            throw new CourseNotFoundException("Course not found");
         }
         foundCourse.get().setCourseId(toBeUpdatedCourse.getCourseId());
         foundCourse.get().setCourseName(toBeUpdatedCourse.getCourseName());
@@ -60,7 +61,7 @@ public class CourseServiceIMPL implements CourseService {
         Optional<CourseEntity> foundCourse =
                 courseDao.findById(courseId);
         if(!foundCourse.isPresent()){
-            throw new Exception("Course not found");
+            throw new CourseNotFoundException("Course not found");
         }
         return conversion.toCourseDTO(courseDao.getReferenceById(courseId));
     }

@@ -19,6 +19,6 @@ public class IDGen {
         return "CMR-"+ UUID.randomUUID();
     }
     public static String generateCourseEnrollmentID() {
-        return "ENR" + UUID.randomUUID();
+        return "ENR-" + UUID.randomUUID();
     }
 }

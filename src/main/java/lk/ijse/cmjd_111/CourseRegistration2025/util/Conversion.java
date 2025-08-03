@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -130,7 +131,8 @@ public class Conversion {
         var enrollmentDTO = new EnrollmentDTO();
         enrollmentDTO.setMarks(enrollmentlEntity.getMarks());
         enrollmentDTO.setGrade(enrollmentlEntity.getGrade());
-        enrollmentDTO.setEnrollmentDate(enrollmentlEntity.getEnrollmentDate());
+        enrollmentDTO.setEnrollmentId(enrollmentDTO.getEnrollmentId());
+        enrollmentDTO.setEnrollmentDate(LocalDate.parse(enrollmentlEntity.getEnrollmentDate()));
         if (enrollmentlEntity.getCourse() != null) {
             enrollmentDTO.setCourseId(enrollmentlEntity.getCourse().getCourseId());
         }
@@ -143,6 +145,7 @@ public class Conversion {
         var enrollmentEntity = new EnrollmentEntity();
         enrollmentEntity.setMarks(enrollmentDTO.getMarks());
         enrollmentEntity.setGrade(enrollmentDTO.getGrade());
+        enrollmentEntity.setEnrollmentId(enrollmentDTO.getEnrollmentId());
         enrollmentDTO.setEnrollmentDate(enrollmentDTO.getEnrollmentDate());
         if (enrollmentDTO.getCourseId() != null) {
             CourseEntity selectedCourse = courseDao.findById(enrollmentDTO.getCourseId())

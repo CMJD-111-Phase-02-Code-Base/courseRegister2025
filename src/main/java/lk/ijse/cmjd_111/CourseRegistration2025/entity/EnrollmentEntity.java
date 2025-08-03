@@ -20,7 +20,7 @@ public class EnrollmentEntity {
     @ManyToOne
     @JoinColumn(name = "courseId")
     private CourseEntity course;
-    private LocalDate enrollmentDate;
+    private String enrollmentDate;
     private Float marks;
     private String grade;
 }

@@ -1,10 +1,10 @@
-package lk.ijse.cmjd_111.CourseRegistration2025.service;
+package lk.ijse.cmjd_111.CourseRegistration2025.service.impl;
 
 import jakarta.transaction.Transactional;
 import lk.ijse.cmjd_111.CourseRegistration2025.dao.EnrollmentDao;
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.EnrollmentDTO;
-import lk.ijse.cmjd_111.CourseRegistration2025.entity.CourseMaterialEntity;
 import lk.ijse.cmjd_111.CourseRegistration2025.entity.EnrollmentEntity;
+import lk.ijse.cmjd_111.CourseRegistration2025.service.EnrollmentService;
 import lk.ijse.cmjd_111.CourseRegistration2025.util.Conversion;
 import lk.ijse.cmjd_111.CourseRegistration2025.util.IDGen;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +45,7 @@ public class EnrollmentServiceIMPL implements EnrollmentService {
             throw new Exception("Enrollment not found");
         }
         foundEnrollment.get().setGrade(toBeUpdatedenrollment.getGrade());
-        foundEnrollment.get().setEnrollmentDate(toBeUpdatedenrollment.getEnrollmentDate());
+        foundEnrollment.get().setEnrollmentDate(String.valueOf(toBeUpdatedenrollment.getEnrollmentDate()));
         foundEnrollment.get().setMarks(toBeUpdatedenrollment.getMarks());
         foundEnrollment.get().getCourse().setCourseId(toBeUpdatedenrollment.getCourseId());
         foundEnrollment.get().getStudent().setId(toBeUpdatedenrollment.getStudentId());
