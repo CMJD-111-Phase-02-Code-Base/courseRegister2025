@@ -28,7 +28,7 @@ public class CourseMaterialServiceIMPL implements CourseMaterialService {
     private final Conversion conversion;
 
     @Override
-    public void saveCourseMaterial(String fileName, String materialType,
+    public void  saveCourseMaterial(String fileName, String materialType,
                                    MultipartFile material,
                                    String uploadAt, String courseId) throws IOException {
 

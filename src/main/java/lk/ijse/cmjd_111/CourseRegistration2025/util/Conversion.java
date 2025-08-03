@@ -2,13 +2,12 @@ package lk.ijse.cmjd_111.CourseRegistration2025.util;
 
 import lk.ijse.cmjd_111.CourseRegistration2025.dao.CourseDao;
 import lk.ijse.cmjd_111.CourseRegistration2025.dao.LecturerDao;
+import lk.ijse.cmjd_111.CourseRegistration2025.dao.StudentDao;
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.CourseDTO;
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.CourseMaterialDTO;
+import lk.ijse.cmjd_111.CourseRegistration2025.dto.EnrollmentDTO;
 import lk.ijse.cmjd_111.CourseRegistration2025.dto.UserDTO;
-import lk.ijse.cmjd_111.CourseRegistration2025.entity.CourseEntity;
-import lk.ijse.cmjd_111.CourseRegistration2025.entity.CourseMaterialEntity;
-import lk.ijse.cmjd_111.CourseRegistration2025.entity.LecturerEntity;
-import lk.ijse.cmjd_111.CourseRegistration2025.entity.StudentEntity;
+import lk.ijse.cmjd_111.CourseRegistration2025.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -22,6 +21,7 @@ public class Conversion {
     private final ModelMapper modelMapper;
     private final LecturerDao lecturerDao;
     private final CourseDao courseDao;
+    private final StudentDao studentDao;
 
     //Student
     public UserDTO toStudentDTO(StudentEntity student){
@@ -44,6 +44,15 @@ public class Conversion {
         return modelMapper.map(lecturers,new TypeToken<List<UserDTO>>(){}.getType());
     }
     //Admin
+    public UserDTO toAdminDTO(AdminEntity admin){
+        return modelMapper.map(admin,UserDTO.class);
+    }
+    public AdminEntity toAdminEntity(UserDTO adminDto){
+        return modelMapper.map(adminDto,AdminEntity.class);
+    }
+    public List<UserDTO> getAdminDTOList(List<AdminEntity> adminEntityList){
+        return modelMapper.map(adminEntityList,new TypeToken<List<UserDTO>>(){}.getType());
+    }
 
     //Course
     public CourseDTO toCourseDTO(CourseEntity course){
@@ -116,4 +125,44 @@ public class Conversion {
     public List<CourseMaterialEntity> toCourseMaterialEntityList(List<CourseMaterialDTO> dtos) {
         return dtos.stream().map(this::toCourseMaterialEntity).toList();
     }
+    //Enrollment
+    public EnrollmentDTO toCourseEnrollmentDTO(EnrollmentEntity enrollmentlEntity) {
+        var enrollmentDTO = new EnrollmentDTO();
+        enrollmentDTO.setMarks(enrollmentlEntity.getMarks());
+        enrollmentDTO.setGrade(enrollmentlEntity.getGrade());
+        enrollmentDTO.setEnrollmentDate(enrollmentlEntity.getEnrollmentDate());
+        if (enrollmentlEntity.getCourse() != null) {
+            enrollmentDTO.setCourseId(enrollmentlEntity.getCourse().getCourseId());
+        }
+        if(enrollmentlEntity.getStudent() != null){
+            enrollmentDTO.setStudentId(enrollmentlEntity.getStudent().getId());
+        }
+        return enrollmentDTO;
+    }
+    public EnrollmentEntity toCourseEnrollmentEntity(EnrollmentDTO enrollmentDTO) {
+        var enrollmentEntity = new EnrollmentEntity();
+        enrollmentEntity.setMarks(enrollmentDTO.getMarks());
+        enrollmentEntity.setGrade(enrollmentDTO.getGrade());
+        enrollmentDTO.setEnrollmentDate(enrollmentDTO.getEnrollmentDate());
+        if (enrollmentDTO.getCourseId() != null) {
+            CourseEntity selectedCourse = courseDao.findById(enrollmentDTO.getCourseId())
+                    .orElseThrow(() -> new RuntimeException("Course not found with id: " + enrollmentDTO.getCourseId()));
+            enrollmentEntity.setCourse(selectedCourse);
+        }
+        if (enrollmentDTO.getStudentId() != null) {
+            StudentEntity selecteStudent = studentDao.findById(enrollmentDTO.getStudentId())
+                    .orElseThrow(() -> new RuntimeException("Student not found with id: " + enrollmentDTO.getCourseId()));
+            enrollmentEntity.setStudent(selecteStudent);
+        }
+        return enrollmentEntity;
+    }
+    public List<EnrollmentDTO> toCourseEnrollmentDTOList(List<EnrollmentEntity> enrollmentEntities) {
+        return enrollmentEntities.stream().map(this::toCourseEnrollmentDTO).toList();
+    }
+
+    public List<EnrollmentEntity> toCourseEnrollmentlEntityList(List<EnrollmentDTO> dtos) {
+        return dtos.stream().map(this::toCourseEnrollmentEntity).toList();
+    }
+
+
 }

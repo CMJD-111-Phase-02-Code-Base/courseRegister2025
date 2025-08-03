@@ -9,10 +9,16 @@ public class IDGen {
     public static String generateLecturerID(){
         return "LECT-"+ UUID.randomUUID();
     }
+    public static String adminIdGen() {
+        return "ADM-"+ UUID.randomUUID();
+    }
     public static String generateCourseID(){
         return "CRS-"+ UUID.randomUUID();
     }
     public static String generateCourseMaterialID(){
         return "CMR-"+ UUID.randomUUID();
+    }
+    public static String generateCourseEnrollmentID() {
+        return "ENR" + UUID.randomUUID();
     }
 }
